@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages>
+ <message id="tpl.template">
+ </message>
+</messages>
+<html lang="en" class="h-100">
+  <head>
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/icon.png' %}"/>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+
+    {%block head%}{%endblock%}
+
+    <!-- Bootstrap core CSS -->
+    <link href={% static "css/bootstrap.min.css" %} rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href={% static 'css/sticky-footer-navbar.css' %} rel="stylesheet">
+  
+    <link href={% static "css/question.css" %} rel="stylesheet">
+    <link href={% static "css/name.css" %} rel="stylesheet">
+    <link href={% static "css/tag-cloud.css" %} rel="stylesheet">
+    <link href={% static "css/avatar.css" %} rel="stylesheet">
+    <link href={% static "css/my.css" %} rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/coliff/bootstrap-rfs/bootstrap-rfs.css">
+
+    <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+    <script>
+          $(document).ready(function() {
+        $("body").tooltip({ selector: '[data-toggle=tooltip]',placement: 'right' });
+    });
+    </script>
+
+    {% with '0123456789' as list_for_random %}
+      <script src={% static "js/ajax.js" %}></script> <!-- ?seed={{ list_for_random | random }} -->
+    {% endwith %}
+    <script src={% static "js/bootstrap.bundle.min.js"%}></script>
+
+    <script type="text/javascript"> document.addEventListener('click', function(e) { if(document.activeElement.toString() == '[object HTMLButtonElement]'){ document.activeElement.blur(); } }); </script>
+
+  </head>
+    
+  <body class="d-flex flex-column h-100 bg-image" style="background-image: url({% static 'img/background.jpg' %}); background-size:cover; height: 100vh"> <!-- background-size:cover; -->
+    <header class="mb-auto">
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+          <a id='main-brand' class="navbar-brand" href="#">
+            <img src="{% static 'img/icon.png' %}" class="me-1" style="width: 4vh; height: 4vh; min-height:100%;">
+            {{SITE_TITLE}}
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-md-0 align-items-center">
+              <li class="nav-item">
+                <!-- <a class="nav-link active" aria-current="page" href="#">Главная</a> -->
+              </li>
+            </ul>
+            <form action="{% url 'search' %}" method='get' class="d-flex">
+              <input name='query' class="form-control me-2 p-2" type="search" placeholder="Ваш запрос..." aria-label="Ваш запрос...">
+              <button class="btn btn-outline-success me-2" type="submit">Найти</button>
+            </form>
+            <div class="d-flex align-items-center me-lg-1 ms-auto">
+              {% if username %}
+                <a id="settings" href='#' class="me-2">
+                  <img src="{{avatar}}" alt="{{usernick}}" style="width: 4vh; height: 4vh; min-height:100%;">
+                </a>
+                <button id="ask" class="btn btn-outline-success align-middle me-2">+</button>
+                <a class="btn btn-outline-danger align-middle" href="{% url 'logout' %}">Выйти</a>
+              {% else %}
+                <button id="login" class="btn btn-outline-success align-middle me-2">Войти</button>
+                <button id="signup" class="btn btn-outline-danger align-middle">Регистрация</button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <main class="flex-shrink-0 mb-4 mt-4">
+      <div class='container me-auto ms-auto'>
+        <div class="row border border-dark">
+          <div class="col-9 p-4 bg-white rounded-3 border-end border-dark">
+            <div id="content" class="d-flex flex-column w-100 h-100 align-items-stretch justify-content-center">
+              {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-dismissible fade show {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger {% else %}alert-success {% endif %}">
+                        {{ message }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+                    </div>
+                {% endfor %}
+              {% endif %}
+              {% block content %}{% endblock %}
+            </div>
+          </div>
+          <div class="col-3 py-4 bg-white rounded-3">
+            <div class="row">
+              <h2 class="text-center mb-2 d-none d-lg-block">Популярные теги</h2>
+              <h4 class="text-center mb-2 d-sm-none d-lg-none d-md-block">Популярные теги</h4>
+              <h6 class="text-center mb-2 d-md-none d-lg-none">Популярные теги</h6>
+              <div class="container text-center">
+                {% if tags_rank %}
+                  {% include "block_tags.html" with tags=tags_rank %}
+                {% else %}
+                  Нет тегов :(
+                {% endif %}
+              </div>
+            </div>
+            <div class="row mt-4 text-center">
+              <h2 class="text-center mb-2 d-none d-lg-block">Лучшие участники</h2>
+              <h4 class="text-center mb-2 d-sm-none d-lg-none d-md-block">Лучшие участники</h4>
+              <h5 class="text-center mb-2 d-md-none d-lg-none">Лучшие участники</h5>
+              <div class="container text-center">
+                {% if best_users %}
+                  <ul class="list-group p-0">
+                    {% for user in best_users %}
+                      <li class="list-group-item">{{user.nick}}</li>
+                    {% endfor %}
+                  </ul>
+                {% else %}
+                  Нет участников :(
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer mt-auto py-3 bg-light">
+      <div class="container">
+        <span class="text-muted">{{SITE_TITLE}}, 2021. Все права не защищены.</span>
+      </div> 
+    </footer>
+  </body>
+</html>
