@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages>
+    <message id="form_input">
+        <div class="form-inline">
+        <div class="form-group">
+            ${label}
+            ${input}
+        </div>
+        </div>
+    </message>
+</messages>

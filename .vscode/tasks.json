@@ -9,9 +9,7 @@
                 "-g",
                 "${file}",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}",
-                "-lwthttp",
-                "-lwt"
+                "${fileDirname}/${fileBasenameNoExtension}"
             ],
             "options": {
                 "cwd": "${fileDirname}"

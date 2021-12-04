@@ -1,13 +1,15 @@
 {
     "version": "0.2.0",
     "configurations": [
+        
         {
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
             // Resolved by CMake Tools:
             "program": "${command:cmake.launchTargetPath}",
-            "args": ["--docroot", "../docroot/", "--http-address", "0.0.0.0", "--http-port", "9090"],
+            "args": ["--docroot", "./docroot", "--http-address", "0.0.0.0", "--http-port", "9090"],
+            //"--docroot", "../docroot/", 
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [
