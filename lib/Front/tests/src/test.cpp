@@ -3,8 +3,12 @@
 TEST(SEARCHBOX_TEST, OBJ_COUNT) {
   Wt::Test::WTestEnvironment environment;
   OverflowProject *app = new OverflowProject(environment);
-  std::function<std::vector<FlatWrapper>(Wt::WString)> get_data = [](Wt::WString input) {
-    return std::vector<FlatWrapper>{FlatWrapper(), FlatWrapper(), FlatWrapper(), FlatWrapper()};
+  std::function<std::vector<std::unique_ptr<Object>>(Wt::WString)> get_data = [](Wt::WString input) {
+    std::vector<std::unique_ptr<Object>> out = {};
+    for (int i = 0; i < 4; i++) {
+      out.push_back(std::make_unique<FlatWrapper>());
+    }
+    return out;
   };
   app->searchbox->get_data = get_data;
   app->searchbox->showresults();
@@ -27,15 +31,17 @@ TEST(FLATWRAPPER_TEST, INFO) {
   Wt::Test::WTestEnvironment environment;
   environment.setDocRoot(".");
   OverflowProject *app = new OverflowProject(environment);
-  FlatWrapper flatw = FlatWrapper();
-  std::function<std::vector<FlatWrapper>(Wt::WString)> get_data = [flatw](Wt::WString input) {
-    return std::vector<FlatWrapper>{flatw};
+  std::function<std::vector<std::unique_ptr<Object>>(Wt::WString)> get_data = [](Wt::WString input) {
+    std::vector<std::unique_ptr<Object>> out = {};
+    for (int i = 0; i < 1; i++) {
+      out.push_back(std::make_unique<FlatWrapper>());
+    }
+    return out;
   };
   app->searchbox->get_data = get_data;
   app->searchbox->showresults();
-  flatw = app->searchbox->data[0];
   std::stringstream result;
-  flatw.info()->renderTemplate(result);
+  app->searchbox->data[0]->info()->renderTemplate(result);
   EXPECT_EQ(result.str(), "title price");
   delete app;
 }

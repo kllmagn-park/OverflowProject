@@ -4,11 +4,13 @@
 
 #include "object_widget.h"
 
-template <typename T>
-class SearchBox: public Wt::WContainerWidget { // интерфейс поисковой выдачи
-  static_assert(std::is_base_of<Object, T>::value, "Ошибка наследования.");
+class SearchBox: public Wt::WContainerWidget {
+/*
+Интерфейс поисковой выдачи (GUI составляющая).
+Обеспечивает отображение заданного списка объектов подключенной модели (квартир).
+*/
   public:
-    SearchBox(std::function<std::vector<T>(Wt::WString)> _get_data): get_data(_get_data) {
+    SearchBox(std::function<std::vector<std::unique_ptr<Object>>(Wt::WString)> gd): get_data(gd) {
       setContentAlignment(Wt::AlignmentFlag::Center);
       addStyleClass("row align-self-center");
       is_shown = false;
@@ -31,12 +33,12 @@ class SearchBox: public Wt::WContainerWidget { // интерфейс поиск�
       obj_container->addStyleClass("collapse");
       //obj_container->hide();
     };
-    std::function<std::vector<T>(Wt::WString)> get_data;
+    std::function<std::vector<std::unique_ptr<Object>>(Wt::WString)> get_data;
     void showresults() {
       data = get_data(search_input->text());
       obj_container->clear();
-      for (auto obj: data) {
-        obj_container->addWidget(std::make_unique<ObjectWidget<T>>(obj));
+      for (int i = 0; i < data.size(); i++) {
+        obj_container->addWidget(std::make_unique<ObjectWidget>(*(data[i].get())));
         obj_container->addWidget(std::make_unique<Wt::WBreak>());
       }
       if (!is_shown) {
@@ -44,7 +46,7 @@ class SearchBox: public Wt::WContainerWidget { // интерфейс поиск�
         is_shown = !obj_container->isHidden();
       }
     };
-    std::vector<T> data;
+    std::vector<std::unique_ptr<Object>> data;
   private:
     void collapse() {
         doJavaScript("var collapseElementList = [].slice.call(document.querySelectorAll('#obj_container'))\n"

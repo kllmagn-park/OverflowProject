@@ -31,13 +31,8 @@ target_include_directories(Front PUBLIC ${HEADERS_DIR})
 
 target_link_libraries(Front)
 
-if (CMAKE_BUILD_TYPE STREQUAL Release)
-    message("${ALIAS} Использую WebToolkit [Release].")
-    target_link_libraries(Front wt wthttp)
-elseif(CMAKE_BUILD_TYPE STREQUAL Debug)
-    message("${ALIAS} Использую WebToolkit [Debug].")
-    target_link_libraries(Front wtd wthttpd)
-endif()
+message("${ALIAS} Использую WebToolkit [Release].")
+target_link_libraries(Front wt wthttp)
 
 #message("Использую компонент Selector.")
 #target_include_directories(Front PUBLIC lib/Selector/include)

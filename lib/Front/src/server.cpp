@@ -3,7 +3,7 @@
 /*
 Отображение информационного текста о Flat.
 */
-std::unique_ptr<Wt::WTemplate> FlatWrapper::info() {
+std::unique_ptr<Wt::WTemplate> FlatWrapper::info(){
   std::stringstream ss;
   Wt::WString st = Wt::WString::tr("info");
   std::unique_ptr<Wt::WTemplate> t = std::make_unique<Wt::WTemplate>(st);
@@ -41,14 +41,14 @@ OverflowProject::OverflowProject(const Wt::WEnvironment& env) : WApplication(env
   /*
     Получение данных от FlatSelector.
   */
-  std::function<std::vector<FlatWrapper>(Wt::WString)> _get_data = [](Wt::WString input) {
-    std::vector<FlatWrapper> out = {};
+  std::function<std::vector<std::unique_ptr<Object>>(Wt::WString)> get_data = [](Wt::WString input) {
+    std::vector<std::unique_ptr<Object>> out = {};
     for (int i = 0; i < 10; i++) {
-      out.push_back(FlatWrapper());
+      out.push_back(std::make_unique<FlatWrapper>());
     }
     return out;
   };
-  searchbox = root()->addWidget(std::make_unique<SearchBox<FlatWrapper>>(_get_data));
+  searchbox = root()->addWidget(std::make_unique<SearchBox>(get_data));
 }
 
 int run_server(int argc, char **argv)

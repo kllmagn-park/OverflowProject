@@ -2,15 +2,13 @@
 
 #include <iostream>
 
-using namespace std;
-
 namespace Settings {
     /*
     Основные настройки.
     */
     class General {
     public:
-        static string site_title;
+        static std::string site_title;
     };
 
     /*
@@ -18,7 +16,7 @@ namespace Settings {
     */
     class Static {
     public:
-        static string static_dir;
+        static std::string static_dir;
     };
 
     /*
@@ -26,6 +24,6 @@ namespace Settings {
     */
     class Templates {
     public:
-        static string templates_dir;
+        static std::string templates_dir;
     };
 };
